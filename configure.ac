@@ -352,6 +352,8 @@ AC_DEFINE([MODULE_VERSION], "folks_module_version", [Module interface version])
 BACKEND_DIR='$(libdir)/folks/$(FOLKS_MODULE_VERSION)/backends'
 AC_SUBST([BACKEND_DIR])
 
+BACKEND_DUMMY='$(top_builddir)/backends/dummy/.libs/dummy.so'
+AC_SUBST([BACKEND_DUMMY])
 BACKEND_KF='$(top_builddir)/backends/key-file/.libs/key-file.so'
 AC_SUBST([BACKEND_KF])
 BACKEND_TP='$(top_builddir)/backends/telepathy/.libs/telepathy.so'
@@ -378,7 +380,7 @@ if test x$enable_ofono_backend = xyes; then
 fi
 
 # All of the backend libraries in our tree; to be used by the tests
-BACKEND_UNINST_PATH='$(BACKEND_KF):$(BACKEND_TP)'
+BACKEND_UNINST_PATH='$(BACKEND_DUMMY):$(BACKEND_KF):$(BACKEND_TP)'
 AS_IF([test x$have_libsocialweb_backend = xyes], [
   LIBSOCIALWEB_BACKEND_UNINST_PATH='$(BACKEND_LIBSOCIALWEB)'
   BACKEND_UNINST_PATH="$BACKEND_UNINST_PATH:$LIBSOCIALWEB_BACKEND_UNINST_PATH"
@@ -634,6 +636,8 @@ AC_CONFIG_FILES([
     folks/org.freedesktop.folks.gschema.xml
     Makefile
     backends/Makefile
+    backends/dummy/Makefile
+    backends/dummy/lib/Makefile
     backends/key-file/Makefile
     backends/libsocialweb/Makefile
     backends/libsocialweb/lib/Makefile
