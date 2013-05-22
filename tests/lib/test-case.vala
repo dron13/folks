@@ -43,11 +43,11 @@ public abstract class Folks.TestCase : Object
             adaptor.name, adaptor.set_up, adaptor.run, adaptor.tear_down));
     }
 
-  public virtual void set_up ()
+  public virtual async void set_up ()
     {
     }
 
-  public virtual void tear_down ()
+  public virtual async void tear_down ()
     {
     }
 
@@ -56,7 +56,7 @@ public abstract class Folks.TestCase : Object
       return this._suite;
     }
 
-	private class Adaptor
+  private class Adaptor
     {
       public string name { get; private set; }
       private unowned TestMethod _test;
@@ -74,7 +74,20 @@ public abstract class Folks.TestCase : Object
           GLib.set_printerr_handler (Adaptor._printerr_func_stack_trace);
           Log.set_default_handler (this._log_func_stack_trace);
 
-          this._test_case.set_up ();
+          var main_loop = new MainLoop ();
+
+          Idle.add (() =>
+            {
+              this._test_case.set_up.begin ((s, r) =>
+                {
+                  this._test_case.set_up.end (r);
+                  main_loop.quit ();
+                });
+
+              return false;
+            });
+
+          main_loop.run ();
         }
 
       private static void _printerr_func_stack_trace (string? text)
@@ -112,7 +125,20 @@ public abstract class Folks.TestCase : Object
 
       public void tear_down (void* fixture)
         {
-          this._test_case.tear_down ();
+          var main_loop = new MainLoop ();
+
+          Idle.add (() =>
+            {
+              this._test_case.tear_down.begin ((s, r) =>
+                {
+                  this._test_case.tear_down.end (r);
+                  main_loop.quit ();
+                });
+
+              return false;
+            });
+
+          main_loop.run ();
         }
     }
 }

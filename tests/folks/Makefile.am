@@ -3,7 +3,9 @@ AM_CPPFLAGS = \
 	$(GEE_CFLAGS) \
 	$(TP_GLIB_CFLAGS) \
 	-I$(top_srcdir)/folks \
+	-I$(top_srcdir)/backends/dummy/lib \
 	-I$(top_srcdir)/tests/lib \
+	-I$(top_srcdir)/tests/lib/dummy \
 	-I$(top_srcdir)/tests/lib/key-file \
 	-I$(top_srcdir)/tests/lib/telepathy/contactlist \
 	-include $(CONFIG_HEADER) \
@@ -11,8 +13,10 @@ AM_CPPFLAGS = \
 
 LDADD = \
 	$(top_builddir)/tests/lib/libfolks-test.la \
+	$(top_builddir)/tests/lib/dummy/libdummy-test.la \
 	$(top_builddir)/tests/lib/key-file/libkf-test.la \
 	$(top_builddir)/tests/lib/telepathy/contactlist/libtp-test-contactlist.la \
+	$(top_builddir)/backends/dummy/lib/libfolks-dummy.la \
 	$(top_builddir)/folks/libfolks.la \
 	$(GLIB_LIBS) \
 	$(GEE_LIBS) \
@@ -29,7 +33,9 @@ AM_VALAFLAGS = \
 	--disable-warnings \
 	--vapidir=. \
 	--vapidir=$(top_srcdir)/folks \
+	--vapidir=$(top_srcdir)/backends/dummy/lib \
 	--vapidir=$(top_srcdir)/tests/lib \
+	--vapidir=$(top_srcdir)/tests/lib/dummy \
 	--vapidir=$(top_srcdir)/tests/lib/key-file \
 	--vapidir=$(top_builddir)/tests/lib/telepathy/contactlist/ \
 	--pkg gobject-2.0 \
@@ -37,8 +43,10 @@ AM_VALAFLAGS = \
 	--pkg gee-1.0 \
 	--pkg folks \
 	--pkg folks-test \
+	--pkg dummy-test \
 	--pkg kf-test \
 	--pkg tp-test-contactlist \
+	--pkg folks-dummy \
 	-g \
 	$(NULL)
 
@@ -55,7 +63,7 @@ noinst_PROGRAMS = \
 	$(NULL)
 
 SESSION_CONF = $(top_builddir)/tests/lib/telepathy/contactlist/session.conf
-backend_store_key_file=$(top_srcdir)/tests/data/backend-store-all.ini
+backend_store_key_file=$(top_srcdir)/tests/data/backend-store-dummy-only.ini # TODO
 avatar_file=@abs_top_srcdir@/tests/data/avatar-01.jpg
 TESTS_ENVIRONMENT = \
 	FOLKS_BACKEND_PATH=$(BACKEND_UNINST_PATH) \

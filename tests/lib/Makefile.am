@@ -1,4 +1,5 @@
 SUBDIRS = \
+	dummy \
 	key-file \
 	$(NULL)
 
@@ -19,6 +20,7 @@ SUBDIRS += eds
 endif
 
 DIST_SUBDIRS = \
+	dummy \
 	key-file \
 	telepathy \
 	eds \
@@ -28,7 +30,11 @@ DIST_SUBDIRS = \
 
 noinst_LTLIBRARIES = libfolks-test.la
 
-libfolks_test_la_SOURCES = test-case.vala test-utils.vala
+libfolks_test_la_SOURCES = \
+	normal-test-case.vala \
+	test-case.vala \
+	test-utils.vala \
+	$(NULL)
 
 libfolks_test_la_CFLAGS = \
 	$(AM_CFLAGS) \

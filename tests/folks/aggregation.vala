@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011 Collabora Ltd.
+ * Copyright (C) 2013 Philip Withnall
  *
  * This library is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,16 +16,18 @@
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authors: Travis Reitter <travis.reitter@collabora.co.uk>
+ *          Philip Withnall <philip@tecnocode.co.uk>
  */
 
 using Gee;
 using Folks;
 using TpTests;
 
-public class AggregationTests : Folks.TestCase
+public class AggregationTests : Folks.NormalTestCase
 {
   private KfTest.Backend _kf_backend;
   private TpTests.Backend _tp_backend;
+  private DummyTest.Backend _dummy_backend;
   private HashSet<string> _default_personas;
   private int _test_timeout = 3;
 
@@ -34,6 +37,7 @@ public class AggregationTests : Folks.TestCase
 
       this._kf_backend = new KfTest.Backend ();
       this._tp_backend = new TpTests.Backend ();
+      this._dummy_backend = new DummyTest.Backend ();
 
       /* Create a set of the individuals we expect to see */
       this._default_personas = new HashSet<string> (str_hash, str_equal);
@@ -67,14 +71,18 @@ public class AggregationTests : Folks.TestCase
           this._test_timeout = 10;
     }
 
-  public override void set_up ()
+  public override async void set_up ()
     {
+      yield base.set_up ();
+      this._dummy_backend.set_up (this._backend_store);
       this._tp_backend.set_up ();
     }
 
-  public override void tear_down ()
+  public override async void tear_down ()
     {
       this._tp_backend.tear_down ();
+      this._dummy_backend.tear_down ();
+      yield base.tear_down ();
     }
 
   /* Test that personas are aggregated if their IIDs match (e.g. with the
@@ -88,108 +96,59 @@ public class AggregationTests : Folks.TestCase
     {
       var main_loop = new GLib.MainLoop (null, false);
 
-      this._kf_backend.set_up ("");
-
-      void* account1_handle = this._tp_backend.add_account ("protocol",
-          "me@example.com", "cm", "account");
-      void* account2_handle = this._tp_backend.add_account ("protocol",
-          "me2@example.com", "cm", "account2");
-
-      /* IDs of the individuals we expect to see.
-       * These are externally opaque, but internally are SHA-1 hashes of the
-       * concatenated UIDs of the Personas in the Individual. In these cases,
-       * each default_individual contains two Personas with the same IID.
-       * e.g.
-       *  telepathy:/org/freedesktop/Telepathy/Account/cm/protocol/account2:sjoerd@example.com
-       * and
-       *  telepathy:/org/freedesktop/Telepathy/Account/cm/protocol/account:sjoerd@example.com
-       * in a single Individual. */
-      var default_individuals = new HashSet<string> ();
-
-      /* guillaume@example.com */
-      default_individuals.add ("6380b17dc511b21a1defd4811f1add97b278f92c");
-      /* sjoerd@example.com */
-      default_individuals.add ("6b08188cb2ef8cbaca140b277780069b5af8add6");
-      /* travis@example.com */
-      default_individuals.add ("60c91326018f6a60604f8d260fc24a60a5b8512c");
-      /* olivier@example.com */
-      default_individuals.add ("0e46c5e74f61908f49550d241f2a1651892a1695");
-      /* christian@example.com */
-      default_individuals.add ("07b913b8977c04d2f2011e26a46ea3e3dcfe3e3d");
-      /* geraldine@example.com */
-      default_individuals.add ("f948d4d2af79085ab860f0ef67bf0c201c4602d4");
-      /* helen@example.com */
-      default_individuals.add ("f34529a442577b840a75271b464e90666c38c464");
-      /* wim@example.com */
-      default_individuals.add ("467d13f955e62bf30ebf9620fa052aaee2160260");
-
-      /* Work on a copy of the set of individuals so we can mangle it. We keep
-       * one copy of the set for the individuals_changed signal, and one for
-       * the individuals_changed_detailed signal so that we can compare their
-       * behaviour. */
-      HashSet<string> expected_individuals = new HashSet<string> ();
-      var expected_individuals_detailed = new HashSet<string> ();
-      foreach (var id in default_individuals)
-        {
-          expected_individuals.add (id);
-          expected_individuals_detailed.add (id);
-        }
-
-      /* Set up the aggregator */
-      var aggregator = new IndividualAggregator ();
-      aggregator.individuals_changed_detailed.connect ((changes) =>
-        {
-          var removed = changes.get_keys ();
-          var added = changes.get_values ();
-
-          this._test_iid_individuals_changed (true, added, removed,
-              default_individuals, expected_individuals_detailed);
-        });
-      aggregator.individuals_changed.connect ((added, removed, m, a, r) =>
-        {
-          this._test_iid_individuals_changed (false, added, removed,
-              default_individuals, expected_individuals);
-        });
-
       /* Kill the main loop after a few seconds. If there are still individuals
        * in the set of expected individuals, the aggregator has either failed or
        * been too slow (which we can consider to be failure). */
       Timeout.add_seconds (this._test_timeout, () =>
         {
+          warning ("Killing main loop after %u seconds.", this._test_timeout);
           main_loop.quit ();
           return false;
         });
 
       Idle.add (() =>
         {
-          aggregator.prepare.begin ((s,r) =>
+          this.test_iid_async.begin ((s, r) =>
             {
-              try
-                {
-                  aggregator.prepare.end (r);
-                }
-              catch (GLib.Error e1)
-                {
-                  GLib.critical ("Failed to prepare aggregator: %s",
-                    e1.message);
-                  assert_not_reached ();
-                }
+              this.test_iid_async.end (r);
+              main_loop.quit ();
             });
 
           return false;
         });
 
       main_loop.run ();
+    }
 
-      /* We should have enumerated exactly the individuals in the set */
-      assert (expected_individuals.size == 0);
-      assert (expected_individuals_detailed.size == 0);
+  public async void test_iid_async ()
+    {
+      var store1 = this._dummy_backend.add_persona_store ("store1", {},
+          (store) =>
+        {
+          return { new Dummyf.Persona (store, "iid1") };
+        });
+
+      var store2 = this._dummy_backend.add_persona_store ("store2", {},
+          (store) =>
+        {
+          return { new Dummyf.Persona (store, "iid1") };
+        });
+
+      this._kf_backend.set_up ("");
+
+      /* Prepare the aggregator. */
+      var individuals = yield this.individual_aggregator_prepare ();
+
+      /* Check the individuals. */
+      TestUtils.individuals_map_equals (individuals,
+        {
+          "store1:iid1,store2:iid1"
+        });
 
       /* Clean up for the next test */
-      this._tp_backend.remove_account (account2_handle);
-      this._tp_backend.remove_account (account1_handle);
+      this._dummy_backend.remove_persona_store (store2);
+      this._dummy_backend.remove_persona_store (store1);
       this._kf_backend.tear_down ();
-      aggregator = null;
     }
 
   private void _test_iid_individuals_changed (bool detailed,
