@@ -365,7 +365,7 @@ public class Edsf.Persona : Folks.Persona,
   public async void change_extended_field (
       string name, ExtendedFieldDetails value) throws PropertyError
     {
-      yield ((Edsf.PersonaStore) this.store)._change_extended_field.begin (this, name, value);
+      yield ((Edsf.PersonaStore) this.store)._change_extended_field (this, name, value);
     }
 
   private SmallSet<NoteFieldDetails>? _notes = null;
