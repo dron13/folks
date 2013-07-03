@@ -40,6 +40,7 @@ public class Edsf.Persona : Folks.Persona,
     AvatarDetails,
     BirthdayDetails,
     EmailDetails,
+    ExtendedInfo,
     FavouriteDetails,
     GenderDetails,
     GroupDetails,
@@ -344,6 +345,27 @@ public class Edsf.Persona : Folks.Persona,
     {
       yield ((Edsf.PersonaStore) this.store)._set_emails (this,
           email_addresses);
+    }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @since 0.9.4
+   */
+  public ExtendedFieldDetails get_extended_field (string name)
+    {
+      return ((Edsf.PersonaStore) this.store)._get_extended_field (this, name);
+    }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @since 0.9.4
+   */
+  public async void change_extended_field (
+      string name, ExtendedFieldDetails value) throws PropertyError
+    {
+      yield ((Edsf.PersonaStore) this.store)._change_extended_field.begin (this, name, value);
     }
 
   private SmallSet<NoteFieldDetails>? _notes = null;

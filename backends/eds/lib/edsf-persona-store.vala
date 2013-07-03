@@ -1687,6 +1687,40 @@ public class Edsf.PersonaStore : Folks.PersonaStore
       yield this._commit_modified_property (persona, "email-addresses");
     }
 
+  internal ExtendedFieldDetails _get_extended_field (Edsf.Persona persona, string name)
+    {
+      unowned VCardAttribute? attr = persona.contact.get_attribute (name);
+      if (attr != null)
+        {
+          ExtendedFieldDetails details = new ExtendedFieldDetails (attr.get_value (), null);
+
+          foreach (unowned E.VCardAttributeParam param in attr.get_params ())
+            {
+              details.add_parameter (param.get_name (), param.get_values ());
+            }
+
+           return details;
+        }
+
+      return null;
+    }
+
+  internal async void _change_extended_field (Edsf.Persona persona,
+      string name, ExtendedFieldDetails details) throws PropertyError
+    {
+      var vcard = (E.VCard) persona.contact;
+      unowned E.VCardAttribute? prev_attr = vcard.get_attribute (name);
+
+      if (prev_attr != null)
+        persona.contact.remove_attribute (prev_attr);
+
+      E.VCardAttribute new_attr = new E.VCardAttribute ("", name);
+      new_attr.add_value (details.value);
+
+      persona.contact.add_attribute (new_attr);
+      yield this._commit_modified_property (persona, "extended-info");
+    }
+
   internal async void _set_phones (Edsf.Persona persona,
       Set<PhoneFieldDetails> phones) throws PropertyError
     {
