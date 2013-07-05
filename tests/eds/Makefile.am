@@ -83,6 +83,7 @@ TESTS = \
 	enable-disable-stores \
 	set-is-favourite \
 	perf \
+	extended-info \
 	$(NULL)
 
 RUN_WITH_PRIVATE_BUS = $(top_srcdir)/tests/tools/with-session-bus-eds.sh
@@ -233,6 +234,10 @@ store_removed_SOURCES = \
 
 perf_SOURCES = \
 	perf.vala \
+	$(NULL)
+
+extended_info_SOURCES = \
+	extended-info.vala
 	$(NULL)
 
 helper_create_many_contacts_SOURCES = \

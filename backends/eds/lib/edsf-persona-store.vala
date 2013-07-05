@@ -886,6 +886,9 @@ public class Edsf.PersonaStore : Folks.PersonaStore
                     }
                 }
 
+              /* Add extended_info field */
+              prop_set.add ((!) Folks.PersonaStore.detail_key (PersonaDetail.EXTENDED_INFO));
+
               /* Convert the property set to an array. We can't use .to_array()
                * here because it fails to null-terminate the array. Sigh. */
               this._always_writeable_properties = new string[prop_set.size];
