@@ -45,7 +45,7 @@ public class Folks.ExtendedFieldDetails : AbstractFieldDetails<string>
    * @since 0.9.4
    */
   public ExtendedFieldDetails (string value,
-							   MultiMap<string, string>? parameters = null)
+                               MultiMap<string, string>? parameters = null)
     {
       if (value == "")
         {
