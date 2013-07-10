@@ -376,7 +376,8 @@ public abstract class Folks.PersonaStore : Object
     "last-im-interaction-datetime",
     "call-interaction-count",
     "last-call-interaction-datetime",
-    "anti-links"
+    "anti-links",
+    "extended-info"
   };
 
   /**

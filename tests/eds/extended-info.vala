@@ -50,7 +50,7 @@ public class ExtendedInfoTests : EdsTest.TestCase
       v.set_string (this._full_name);
       c1.set ("full_name", (owned) v);
       v = Value (typeof (string));
-	  v.set_string ("X-FIELD-1=value1,X-FIELD-2=value2");
+      v.set_string ("X-FIELD-1=value1,X-FIELD-2=value2");
       c1.set ("extended_info", (owned) v);
 
       this.eds_backend.add_contact (c1);
@@ -58,9 +58,9 @@ public class ExtendedInfoTests : EdsTest.TestCase
       this._found_field_1 = false;
       this._found_field_2 = false;
 
-	  this._test_extended_info_async.begin ();
+      this._test_extended_info_async.begin ();
 
-	  TestUtils.loop_run_with_timeout (this._main_loop);
+      TestUtils.loop_run_with_timeout (this._main_loop);
 
       assert (this._found_field_1 == true);
       assert (this._found_field_2 == true);
@@ -112,10 +112,10 @@ public class ExtendedInfoTests : EdsTest.TestCase
           assert (i == null);
         }
 
-	  if (this._found_field_1 == true &&
-          this._found_field_2 == true)
+      if (this._found_field_1 == true &&
+         this._found_field_2 == true)
         this._main_loop.quit ();
-	}
+    }
 }
 
 public int main (string[] args)
