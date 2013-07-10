@@ -961,9 +961,9 @@ public class Folks.Individual : Object,
   /**
    * {@inheritDoc}
    *
-   * @since 0.9.4
+   * @since UNRELEASED
    */
-  public ExtendedFieldDetails get_extended_field (string name)
+  public ExtendedFieldDetails? get_extended_field (string name)
     {
       debug ("Getting extended field '%s' on '%s'…", name, this.id);
 
@@ -984,7 +984,7 @@ public class Folks.Individual : Object,
   /**
    * {@inheritDoc}
    *
-   * @since 0.9.4
+   * @since UNRELEASED
    */
   public async void change_extended_field (
       string name, ExtendedFieldDetails value) throws PropertyError

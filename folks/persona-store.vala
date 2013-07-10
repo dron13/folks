@@ -313,7 +313,7 @@ public enum Folks.PersonaDetail
   /**
    * Field for {@link ExtendedFieldDetails}.
    *
-   * @since 0.9.4
+   * @since UNRELEASED
    */
   EXTENDED_INFO,
 }

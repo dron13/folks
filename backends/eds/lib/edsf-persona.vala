@@ -350,9 +350,9 @@ public class Edsf.Persona : Folks.Persona,
   /**
    * {@inheritDoc}
    *
-   * @since 0.9.4
+   * @since UNRELEASED
    */
-  public ExtendedFieldDetails get_extended_field (string name)
+  public ExtendedFieldDetails? get_extended_field (string name)
     {
       return ((Edsf.PersonaStore) this.store)._get_extended_field (this, name);
     }
@@ -360,7 +360,7 @@ public class Edsf.Persona : Folks.Persona,
   /**
    * {@inheritDoc}
    *
-   * @since 0.9.4
+   * @since UNRELEASED
    */
   public async void change_extended_field (
       string name, ExtendedFieldDetails value) throws PropertyError

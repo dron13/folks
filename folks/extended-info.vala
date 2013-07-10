@@ -28,7 +28,7 @@ using Gee;
  * See {@link Folks.AbstractFieldDetails} for details on common parameter names
  * and values.
  *
- * @since 0.9.4
+ * @since UNRELEASED 
  */
 public class Folks.ExtendedFieldDetails : AbstractFieldDetails<string>
 {
@@ -42,7 +42,7 @@ public class Folks.ExtendedFieldDetails : AbstractFieldDetails<string>
    *
    * @return a new ExtendedFieldDetails
    *
-   * @since 0.9.4
+   * @since UNRELEASED
    */
   public ExtendedFieldDetails (string value,
                                MultiMap<string, string>? parameters = null)
@@ -84,16 +84,16 @@ public class Folks.ExtendedFieldDetails : AbstractFieldDetails<string>
  * This interface allows clients to store arbitrary fields for contacts in backends
  * that support it.
  *
- * @since 0.9.4
+ * @since UNRELEASED
  */
 public interface Folks.ExtendedInfo : Object
 {
   /**
    * Retrieve the value for an arbitrary field.
    *
-   * @since 0.9.4
+   * @since UNRELEASED
    */
-  public abstract ExtendedFieldDetails get_extended_field (string name);
+  public abstract ExtendedFieldDetails? get_extended_field (string name);
 
   /**
    * Change the value of an arbitrary field.
@@ -102,7 +102,7 @@ public interface Folks.ExtendedInfo : Object
    * @param value new value for the arbitrary field
    * @throws PropertyError if setting the value failed
    *
-   * @since 0.9.4
+   * @since UNRELEASED
    */
   public virtual async void change_extended_field (
       string name, ExtendedFieldDetails value) throws PropertyError

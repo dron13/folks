@@ -1690,7 +1690,7 @@ public class Edsf.PersonaStore : Folks.PersonaStore
       yield this._commit_modified_property (persona, "email-addresses");
     }
 
-  internal ExtendedFieldDetails _get_extended_field (Edsf.Persona persona, string name)
+  internal ExtendedFieldDetails? _get_extended_field (Edsf.Persona persona, string name)
     {
       unowned VCardAttribute? attr = persona.contact.get_attribute (name);
       if (attr != null)
