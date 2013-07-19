@@ -102,7 +102,7 @@ public class ExtendedInfoTests : EdsTest.TestCase
                 this._found_field_1 = true;
               if (i.get_extended_field ("X-FIELD-2") != null)
                 this._found_field_2 = true;
-			}
+            }
         }
 
       assert (removed.size == 1);

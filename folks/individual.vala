@@ -971,7 +971,7 @@ public class Folks.Individual : Object,
        * as a writeable property. */
       foreach (var p in this._persona_set)
         {
-          if ("extended_info" in p.writeable_properties)
+          if ("extended-info" in p.writeable_properties)
             {
               var e = p as ExtendedInfo;
               return e.get_extended_field (name);
@@ -979,7 +979,7 @@ public class Folks.Individual : Object,
         }
 
       return null;
-	}
+    }
 
   /**
    * {@inheritDoc}
@@ -1032,7 +1032,7 @@ public class Folks.Individual : Object,
 
           throw persona_error;
         }
-	}
+    }
 
   /**
    * The set of {@link Persona}s encapsulated by this Individual.

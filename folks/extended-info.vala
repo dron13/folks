@@ -28,7 +28,7 @@ using Gee;
  * See {@link Folks.AbstractFieldDetails} for details on common parameter names
  * and values.
  *
- * @since UNRELEASED 
+ * @since UNRELEASED
  */
 public class Folks.ExtendedFieldDetails : AbstractFieldDetails<string>
 {
@@ -55,7 +55,7 @@ public class Folks.ExtendedFieldDetails : AbstractFieldDetails<string>
       this.value = value;
       if (parameters != null)
         this.parameters = (!) parameters;
-	}
+    }
 
   /**
    * {@inheritDoc}
@@ -110,5 +110,5 @@ public interface Folks.ExtendedInfo : Object
       /* Default implementation */
       throw new PropertyError.NOT_WRITEABLE (
           _("Extended fields are not writeable on this contact."));
-	}
+    }
 }
