@@ -7,17 +7,11 @@ pkgconfig_in = folks-tracker.pc.in
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pkgconfig_in:.in=)
 
-libfolks_tracker_la_vala.stamp:
-
-folks_tracker_valasources = \
+libfolks_tracker_la_SOURCES = \
 	trf-namespace.vala \
 	trf-persona.vala \
 	trf-persona-store.vala \
 	trf-util.vala \
-	$(NULL)
-
-libfolks_tracker_la_SOURCES = \
-	$(folks_tracker_valasources) \
 	$(NULL)
 
 libfolks_tracker_la_VALAFLAGS = \
@@ -33,16 +27,9 @@ libfolks_tracker_la_VALAFLAGS = \
 	--pkg gee-0.8 \
 	--pkg tracker-sparql-$(TRACKER_SPARQL_MAJOR) \
 	--includedir folks \
+	--library folks-tracker \
 	--vapi folks-tracker.vapi \
 	-H folks/folks-tracker.h \
-	$(NULL)
-
-folks_backend_tracker_deps = \
-	folks \
-	gee-0.8 \
-	gio-2.0 \
-	gobject-2.0 \
-	tracker-sparql-$(TRACKER_SPARQL_MAJOR) \
 	$(NULL)
 
 libfolks_tracker_la_CPPFLAGS = \
@@ -99,14 +86,7 @@ dist_vapi_DATA = \
 ##################################################################
 
 CLEANFILES =
-MAINTAINERCLEANFILES = \
-	$(folks_tracker_valasources:.vala=.c) \
-	libfolks_tracker_la_vala.stamp \
-	folks/folks-tracker.h \
-	folks-tracker.vapi \
-	$(dist_noinst_DATA) \
-	$(NULL)
-
+MAINTAINERCLEANFILES =
 EXTRA_DIST = \
 	$(pkgconfig_in) \
 	$(MAINTAINERCLEANFILES) \

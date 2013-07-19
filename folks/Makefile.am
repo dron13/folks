@@ -174,20 +174,6 @@ EXTRA_DIST = \
 	redeclare-internal-api.h \
 	$(NULL)
 
-BUILT_SOURCES = \
-	folks-internal.h \
-	folks-internal.vapi \
-	folks.h \
-	folks.vapi \
-	$(NULL)
-
-GITIGNOREFILES = \
-	$(patsubst %.vala,%.c,$(filter %.vala,$(libfolks_la_SOURCES))) \
-	$(patsubst %.vala,%.c,$(filter %.vala,$(libfolks_internal_la_SOURCES))) \
-	libfolks_la_vala.stamp \
-	libfolks_internal_la_vala.stamp \
-	$(NULL)
-
 CLEANFILES =
 MAINTAINERCLEANFILES =
 
@@ -216,10 +202,6 @@ nodist_typelib_DATA = $(GIRS:.gir=.typelib)
 CLEANFILES += $(nodist_typelib_DATA)
 endif
 
-MAINTAINERCLEANFILES += \
-	$(BUILT_SOURCES) \
-	$(NULL)
-
 ##################################################
 # GSettings
 ##################################################
@@ -234,6 +216,6 @@ convert_DATA = folks.convert
 
 EXTRA_DIST += $(convert_DATA)
 CLEANFILES += $(gsettings_SCHEMAS)
-GITIGNOREFILES += org.freedesktop.folks.gschema.valid
+GITIGNOREFILES = org.freedesktop.folks.gschema.valid
 
 -include $(top_srcdir)/git.mk

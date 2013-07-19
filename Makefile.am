@@ -16,11 +16,11 @@ SUBDIRS += docs
 endif
 
 DIST_SUBDIRS = \
-	backends \
-	docs \
 	folks \
-	tests \
+	backends \
 	tools \
+	tests \
+	docs \
 	po \
 	$(NULL)
 
@@ -33,6 +33,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-tracker-backend \
 	--enable-zeitgeist \
 	--disable-vala \
+	--disable-fatal-warnings \
 	$(NULL)
 
 EXTRA_DIST = \

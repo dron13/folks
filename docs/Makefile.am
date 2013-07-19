@@ -22,7 +22,6 @@ folks_wiki_pages = \
 EXTRA_DIST = $(folks_wiki_files)
 
 folksdocdir=$(datadir)/devhelp/references/folks
-folksimgdir=$(datadir)/devhelp/references/folks/img
 
 folksgtkdocdir=$(datadir)/gtk-doc/html/folks
 
@@ -41,18 +40,14 @@ folksdoc_DATA = \
 
 folksgtkdoc_DATA = gtk-doc/folks/html/*
 
-folksimg_DATA = \
-	folks/folks/img/*.png \
-	$(NULL)
-
-$(folksdoc_DATA) $(folksimg_DATA): folks-doc.stamp
+$(folksdoc_DATA): folks-doc.stamp
 $(folksgtkdoc_DATA): folks-gtk-doc.stamp
 
 valadoc_flags = \
 	--force \
 	--package-version $(PACKAGE_VERSION) \
 	--no-protected \
-	--driver "$(shell valac --version)" \
+	--driver "$(shell valac --api-version)" \
 	$(NULL)
 
 # folks documentation
@@ -109,7 +104,6 @@ folks-gtk-doc.stamp: $(folks_doc_files) $(folks_wiki_files)
 # Telepathy docs #
 #####################
 folkstelepathydocdir=$(datadir)/devhelp/references/folks-telepathy
-folkstelepathyimgdir=$(datadir)/devhelp/references/folks-telepathy/img
 folkstelepathygtkdocdir=$(datadir)/gtk-doc/html/folks-telepathy
 
 folkstelepathydoc_DATA = \
@@ -119,16 +113,24 @@ folkstelepathydoc_DATA = \
 
 folkstelepathygtkdoc_DATA = gtk-doc/folks-telepathy/html/*
 
-folkstelepathyimg_DATA = \
-	folks-telepathy/folks-telepathy/img/*.png \
-	$(NULL)
-
-$(folkstelepathydoc_DATA) $(folkstelepathyimg_DATA): \
+$(folkstelepathydoc_DATA): \
 	folks-telepathy-doc.stamp \
 	$(NULL)
 $(folkstelepathygtkdoc_DATA): folks-telepathy-gtk-doc.stamp
 
-folks_telepathy_doc_files = $(top_srcdir)/backends/telepathy/lib/*.vala
+# ensure we only have one set of tp-zeitgeist interfaces defined
+folks_telepathy_doc_files_blacklist = \
+	$(top_srcdir)/backends/telepathy/lib/tp-zeitgeist.vala \
+	$(NULL)
+# this expands the list of files, so we can filter out elements
+folks_telepathy_doc_files_all = \
+	$(wildcard $(top_srcdir)/backends/telepathy/lib/*.vala) \
+	$(NULL)
+# FIXME: sort the files manually to work around the native doclet portion of
+# bgo#662784
+folks_telepathy_doc_files = \
+	$(sort \
+	$(filter-out $(folks_telepathy_doc_files_blacklist),$(folks_telepathy_doc_files_all)))
 folks_telepathy_doc_deps = \
 	gmodule-2.0 \
 	gio-2.0 \
@@ -181,7 +183,6 @@ upload_docs += upload-docs-c-folks-telepathy upload-docs-vala-folks-telepathy
 #####################
 if ENABLE_EDS
 folksedsdocdir=$(datadir)/devhelp/references/folks-eds
-folksedsimgdir=$(datadir)/devhelp/references/folks-eds/img
 folksedsgtkdocdir=$(datadir)/gtk-doc/html/folks-eds
 
 folksedsdoc_DATA = \
@@ -191,11 +192,7 @@ folksedsdoc_DATA = \
 
 folksedsgtkdoc_DATA = gtk-doc/folks-eds/html/*
 
-folksedsimg_DATA = \
-	folks-eds/folks-eds/img/*.png \
-	$(NULL)
-
-$(folksedsdoc_DATA) $(folksedsimg_DATA): \
+$(folksedsdoc_DATA): \
 	folks-eds-doc.stamp \
 	$(NULL)
 $(folksedsgtkdoc_DATA): folks-eds-gtk-doc.stamp
@@ -253,7 +250,6 @@ endif # ENABLE_EDS
 #####################
 if ENABLE_LIBSOCIALWEB
 folkslibsocialwebdocdir=$(datadir)/devhelp/references/folks-libsocialweb
-folkslibsocialwebimgdir=$(datadir)/devhelp/references/folks-libsocialweb/img
 folkslibsocialwebgtkdocdir=$(datadir)/gtk-doc/html/folks-libsocialweb
 
 folkslibsocialwebdoc_DATA = \
@@ -263,11 +259,7 @@ folkslibsocialwebdoc_DATA = \
 
 folkslibsocialwebgtkdoc_DATA = gtk-doc/folks-libsocialweb/html/*
 
-folkslibsocialwebimg_DATA = \
-	folks-libsocialweb/folks-libsocialweb/img/*.png \
-	$(NULL)
-
-$(folkslibsocialwebdoc_DATA) $(folkslibsocialwebimg_DATA): \
+$(folkslibsocialwebdoc_DATA): \
 	folks-libsocialweb-doc.stamp \
 	$(NULL)
 $(folkslibsocialwebgtkdoc_DATA): folks-libsocialweb-gtk-doc.stamp

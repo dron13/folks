@@ -1,7 +1,11 @@
-AM_VALAFLAGS += \
+noinst_LTLIBRARIES = libkf-test.la
+
+libkf_test_la_VALAFLAGS = \
 	$(ERROR_VALAFLAGS) \
-	--library=kf-test \
-	--header=kf-test.h \
+	$(AM_VALAFLAGS) \
+	--library kf-test \
+	--vapi kf-test.vapi \
+	--header kf-test.h \
 	--vapidir=$(abs_srcdir) \
 	--vapidir=$(abs_builddir) \
 	--vapidir=$(abs_top_srcdir)/folks \
@@ -11,8 +15,6 @@ AM_VALAFLAGS += \
 	--pkg folks-test \
 	-g \
 	$(NULL)
-
-noinst_LTLIBRARIES = libkf-test.la
 
 libkf_test_la_SOURCES = \
 	backend.vala \
@@ -34,20 +36,10 @@ libkf_test_la_LIBADD = \
 	$(GEE_LIBS) \
 	$(NULL)
 
-MAINTAINERCLEANFILES = \
-	kf-test.vapi \
-	kf-test.h \
-	$(NULL)
-
 EXTRA_DIST = \
 	kf-test.deps \
 	kf-test.vapi \
 	kf-test.h \
-	$(NULL)
-
-GITIGNOREFILES = \
-	$(patsubst %.vala,%.c,$(filter %.vala,$(libkf_test_la_SOURCES))) \
-	libkf_test_la_vala.stamp \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

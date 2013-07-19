@@ -253,14 +253,8 @@ helper_prepare_aggregator_SOURCES = \
 	$(NULL)
 
 CLEANFILES = \
-        *.pid \
-        *.address \
-        $(TESTS) \
-        $(NULL)
-
-MAINTAINERCLEANFILES = \
-	$(addsuffix .c,$(noinst_PROGRAMS)) \
-	$(addsuffix _vala.stamp,$(subst -,_,$(noinst_PROGRAMS))) \
+	*.pid \
+	*.address \
 	$(NULL)
 
 EXTRA_DIST = \

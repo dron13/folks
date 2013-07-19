@@ -26,23 +26,13 @@ pkgconfig_in = folks-eds.pc.in
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pkgconfig_in:.in=)
 
-libfolks_eds_la_vala.stamp:
-
-folks_eds_valasources = \
+libfolks_eds_la_SOURCES = \
 	edsf-namespace.vala \
 	edsf-persona.vala \
 	edsf-persona-store.vala \
 	memory-icon.vala \
 	$(NULL)
 
-libfolks_eds_la_SOURCES = \
-	$(folks_eds_valasources) \
-	$(NULL)
-
-# XXX: it would be nice to do something like this below:
-#    $(addprefix --pkg ,$(folks_backend_eds_deps)) \
-# to factor out repetition, but automake's Vala support doesn't like it
-# because it assumes it can simply match every flag in any _VALAFLAGS string.
 libfolks_eds_la_VALAFLAGS = \
 	$(AM_VALAFLAGS) \
 	$(ERROR_VALAFLAGS) \
@@ -112,13 +102,7 @@ dist_vapi_DATA = \
 ##################################################################
 
 CLEANFILES =
-MAINTAINERCLEANFILES = \
-	$(folks_eds_valasources:.vala=.c) \
-	libfolks_eds_la_vala.stamp \
-	folks/folks-eds.h \
-	folks-eds.vapi \
-	$(NULL)
-
+MAINTAINERCLEANFILES =
 EXTRA_DIST = \
 	$(pkgconfig_in) \
 	$(MAINTAINERCLEANFILES) \

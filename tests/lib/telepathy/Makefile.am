@@ -1,11 +1,15 @@
 SUBDIRS = \
-        contactlist \
-        $(NULL)
+	contactlist \
+	$(NULL)
 
-AM_VALAFLAGS += \
+noinst_LTLIBRARIES = libtpf-test.la
+
+libtpf_test_la_VALAFLAGS = \
 	$(ERROR_VALAFLAGS) \
-	--library=tpf-test \
-	--header=tpf-test.h \
+	$(AM_VALAFLAGS) \
+	--library tpf-test \
+	--vapi tpf-test.vapi \
+	--header tpf-test.h \
 	--vapidir=$(abs_srcdir) \
 	--vapidir=$(abs_builddir) \
 	--vapidir=$(abs_srcdir)/contactlist \
@@ -21,8 +25,6 @@ AM_VALAFLAGS += \
 	--pkg tp-test-contactlist \
 	-g \
 	$(NULL)
-
-noinst_LTLIBRARIES = libtpf-test.la
 
 libtpf_test_la_SOURCES = \
 	test-case.vala \
@@ -49,24 +51,9 @@ libtpf_test_la_LIBADD = \
 	$(TP_GLIB_LIBS) \
 	$(NULL)
 
-MAINTAINERCLEANFILES = \
-	tpf-test.vapi \
-	tpf-test.h \
-	$(NULL)
-
-EXTRA_DIST = \
-	tpf-test.deps \
-	tpf-test.vapi \
-	tpf-test.h \
-	$(NULL)
-
 BUILT_SOURCES = \
 	libtpf_test_la_vala.stamp \
 	$(NULL)
 
-GITIGNOREFILES = \
-	$(patsubst %.vala,%.c,$(filter %.vala,$(libtpf_test_la_SOURCES))) \
-	libtpf_test_la_vala.stamp \
-	$(NULL)
 
 -include $(top_srcdir)/git.mk

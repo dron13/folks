@@ -25,40 +25,28 @@ pkgconfig_in = folks-libsocialweb.pc.in
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pkgconfig_in:.in=)
 
-libfolks_libsocialweb_la_vala.stamp:
-
-folks_libsocialweb_valasources = \
+libfolks_libsocialweb_la_SOURCES = \
 	swf-namespace.vala \
 	swf-persona.vala \
 	swf-persona-store.vala \
 	$(NULL)
 
-libfolks_libsocialweb_la_SOURCES = \
-	$(folks_libsocialweb_valasources) \
-	$(NULL)
-
 libfolks_libsocialweb_la_VALAFLAGS = \
+	$(AM_VALAFLAGS) \
 	$(ERROR_VALAFLAGS) \
-        --vapidir=. \
-        --vapidir=$(top_srcdir)/folks \
-        --pkg folks \
-        --pkg folks-internal \
-        --pkg folks-generics \
-        --pkg gobject-2.0 \
-        --pkg gio-2.0 \
-        --pkg gee-0.8 \
-        --pkg libsocialweb-client \
-        --includedir folks \
-        --vapi folks-libsocialweb.vapi \
-        -H folks/folks-libsocialweb.h \
-        $(NULL)
-
-folks_backend_libsocialweb_deps = \
-	folks \
-	gee-0.8 \
-	gio-2.0 \
-	gobject-2.0 \
-	libsocialweb-client \
+	--vapidir=. \
+	--vapidir=$(top_srcdir)/folks \
+	--pkg folks \
+	--pkg folks-internal \
+	--pkg folks-generics \
+	--pkg gobject-2.0 \
+	--pkg gio-2.0 \
+	--pkg gee-0.8 \
+	--pkg libsocialweb-client \
+	--includedir folks \
+	--library folks-libsocialweb \
+	--vapi folks-libsocialweb.vapi \
+	-H folks/folks-libsocialweb.h \
 	$(NULL)
 
 libfolks_libsocialweb_la_CFLAGS = \
@@ -83,7 +71,7 @@ libfolks_libsocialweb_la_LIBADD = \
 libfolks_libsocialweb_la_LDFLAGS = \
 	$(CODE_COVERAGE_LDFLAGS) \
 	-version-info "$(LT_CURRENT)":"$(LT_REVISION)":"$(LT_AGE)" \
-        -export-symbols-regex "^swf_.*" \
+	-export-symbols-regex "^swf_.*" \
 	$(NULL)
 
 folks_libsocialweb_includedir = $(includedir)/folks
@@ -102,14 +90,7 @@ dist_vapi_DATA = \
 ##################################################################
 
 CLEANFILES =
-MAINTAINERCLEANFILES = \
-	$(folks_libsocialweb_valasources:.vala=.c) \
-	libfolks_libsocialweb_la_vala.stamp \
-	folks/folks-libsocialweb.h \
-	folks-libsocialweb.vapi \
-	$(dist_noinst_DATA) \
-	$(NULL)
-
+MAINTAINERCLEANFILES =
 EXTRA_DIST = \
 	$(pkgconfig_in) \
 	$(MAINTAINERCLEANFILES) \
