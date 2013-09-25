@@ -1725,7 +1725,14 @@ public class Edsf.PersonaStore : Folks.PersonaStore
       new_attr.add_value (details.value);
 
       persona.contact.add_attribute (new_attr);
-      yield this._commit_modified_property (persona, "extended-info");
+
+      try
+        {
+          yield ((!) this._addressbook).modify_contact (persona.contact, null);
+        }
+      catch (GLib.Error e)
+        {
+        }
     }
 
   internal async void _set_phones (Edsf.Persona persona,
