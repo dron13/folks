@@ -3,7 +3,7 @@ m4_define([folks_released], [0])
 
 m4_define([folks_major_version], [0])
 m4_define([folks_minor_version], [9])
-m4_define([folks_micro_version], [3])
+m4_define([folks_micro_version], [5])
 m4_define([folks_nano_version], [1])
 
 # If library source has changed since last release, increment revision
@@ -11,9 +11,9 @@ m4_define([folks_nano_version], [1])
 #  increment current and set revision to 0
 # If public symbols have been added since last release, increment age
 # If public symbols have been removed since last release, set age to 0
-m4_define([folks_lt_current], [39])
-m4_define([folks_lt_revision], [1])
-m4_define([folks_lt_age], [14])
+m4_define([folks_lt_current], [41])
+m4_define([folks_lt_revision], [0])
+m4_define([folks_lt_age], [16])
 
 # Display the nano_version only if it's not '0'
 m4_define([folks_base_version],
@@ -192,7 +192,7 @@ VALA_REQUIRED=0.17.6
 VALADOC_REQUIRED=0.3.1
 TRACKER_SPARQL_MAJOR=0.16
 TRACKER_SPARQL_REQUIRED=0.15.2
-EBOOK_REQUIRED=3.8.1
+EBOOK_REQUIRED=3.9.1
 EDATASERVER_REQUIRED=3.5.3.1
 ZEITGEIST_REQUIRED=0.9.14
 GEE_REQUIRED=0.8.4

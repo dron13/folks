@@ -242,7 +242,7 @@ public class Folks.Individual : Object,
   /**
    * {@inheritDoc}
    *
-   * @since UNRELEASED
+   * @since 0.9.5
    */
   public string[] client_types { get; set; }
 
@@ -1697,7 +1697,7 @@ public class Folks.Individual : Object,
     {
       this._update_single_valued_property (typeof (FavouriteDetails), (p) =>
         {
-          return true;
+          return ((FavouriteDetails) p).is_favourite;
         }, (a, b) =>
         {
           var a_is_favourite = ((FavouriteDetails) a).is_favourite;
