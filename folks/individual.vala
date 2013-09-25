@@ -967,7 +967,7 @@ public class Folks.Individual : Object,
     {
       debug ("Getting extended field '%s' on '%s'…", name, this.id);
 
-      /* Try to get it from the writeable Personas which have "extended_info"
+      /* Try to get it from the writeable Personas which have "extended-info"
        * as a writeable property. */
       foreach (var p in this._persona_set)
         {
@@ -994,11 +994,11 @@ public class Folks.Individual : Object,
       PropertyError? persona_error = null;
       var prop_changed = false;
 
-	  /* Try to write it to only the writeable Personas which have "extended_info"
+	  /* Try to write it to only the writeable Personas which have "extended-info"
        * as a writeable property. */
       foreach (var p in this._persona_set)
         {
-          if ("extended_info" in p.writeable_properties)
+          if ("extended-info" in p.writeable_properties)
             {
               var e = p as ExtendedInfo;
               try

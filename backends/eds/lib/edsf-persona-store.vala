@@ -1702,7 +1702,7 @@ public class Edsf.PersonaStore : Folks.PersonaStore
               string param_name = param.get_name ();
               foreach (unowned string param_value in param.get_values ())
                 {
-                  details.add_parameter (param_name, param_name);
+                  details.add_parameter (param_name, param_value);
                 }
             }
 
